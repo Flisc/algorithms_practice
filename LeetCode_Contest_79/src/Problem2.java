@@ -61,10 +61,12 @@ public class Problem2 {
                                 ))
                         ));
         Optional<Integer> max = reverseMap.keySet().stream().max(Integer::compare);
-        if (max.isPresent()) return reverseMap.get(max.get()).stream()
-                .sorted(Comparator.comparing(String::length).reversed()
-                        .thenComparing(String::compareTo))
-                .findFirst().get();
-        else return null;
+        return max.isPresent()
+                ? reverseMap.get(max.get()).stream()
+                    .sorted(Comparator.comparing(String::length).reversed()
+                            .thenComparing(String::compareTo))
+                    .findFirst()
+                    .orElseGet(null)
+                : null;
     }
 }
