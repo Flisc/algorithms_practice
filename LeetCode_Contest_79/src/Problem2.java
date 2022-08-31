@@ -39,16 +39,13 @@ public class Problem2 {
     public static String largestWordCount(String[] messages, String[] senders) {
         HashMap<String, Integer> senderByWords = new HashMap<>();
         for (int i = 0; i < messages.length; i++) {
-            if (senderByWords.containsKey(senders[i])) {
+            if (senderByWords.containsKey(senders[i]))
                 senderByWords.replace(senders[i], senderByWords.get(senders[i]) + messages[i].split(" ").length);
-            } else {
+            else
                 senderByWords.put(senders[i], messages[i].split(" ").length);
-            }
         }
 
-        /**
-         * key's from source map that have same values are mapped here as values for 1 key (value from source map).
-         */
+        // key's from source map that have same values are mapped here as values for 1 key (value from source map).
         Map<Integer, ArrayList<String>> reverseMap = new HashMap<>(
                 senderByWords.entrySet().stream()
                         .collect(Collectors.groupingBy(Map.Entry::getValue)).values().stream()
