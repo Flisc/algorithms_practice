@@ -1,0 +1,5 @@
+https://gitlab.int.sonrisa.hu/dojo/other/python-guess-the-number
+
+https://gitpod.io/workspaces
+
+https://www.programiz.com/python-programming
