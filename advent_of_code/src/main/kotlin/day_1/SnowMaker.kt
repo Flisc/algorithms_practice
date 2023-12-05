@@ -20,15 +20,15 @@ val digitsByWord = mapOf(
 )
 
 fun main(args: Array<String>) {
-//    val lines = readFileLines("C:\\projects\\practice\\advent_of_code\\src\\main\\kotlin\\day_1\\puzzle.txt")
-    val lines = readFileLines("C:\\projects\\practice\\advent_of_code\\src\\main\\kotlin\\day_1\\example_2.txt")
+    val lines = readFileLines("C:\\projects\\practice\\advent_of_code\\src\\main\\kotlin\\day_1\\puzzle.txt")
+//    val lines = readFileLines("C:\\projects\\practice\\advent_of_code\\src\\main\\kotlin\\day_1\\example_2.txt")
 //    findNextDigit("abcone2threexyz")
     lines.forEach{ println(searchForWords(it)) }
     var totalCalibration: Long = 0
-//    lines.forEach{
-//        totalCalibration = totalCalibration + (calculateLineFromLetters(it)!!)
-//    }
-//    print("calibration: ${totalCalibration}")
+    lines.forEach{
+        totalCalibration = totalCalibration.plus(searchForWords(it)!!)
+    }
+    print("calibration: ${totalCalibration}")
 }
 
 private fun calculateLineFromDigits(line: String): Long? {
@@ -46,38 +46,45 @@ private fun calculateLineFromDigits(line: String): Long? {
 
 
 
-private fun searchForWords(line: String): Any? {
+private fun searchForWords(line: String): Long? {
     var numbers = ArrayList<String>()
     var i: Int = 0
     println("line: ${line}")
     while (i < line.length) {
-        if(line[i].isDigit()){
+        if (line[i].isDigit()) {
             numbers.add(line[i].toString())
             i++
         } else {
-            var defaultKeyLength = line.substring(i, i+2)
-            if (digitsByWord.containsKey(defaultKeyLength)) {
-                numbers.add(digitsByWord.get(defaultKeyLength).toString())
-                i += defaultKeyLength.length
-            } else {
-                var reset = false
-                for(j in i + defaultKeyLength.length..line.length - 1 ) {
-                    var key = line.substring(line.indexOf(defaultKeyLength), j + 1)
-                    if (digitsByWord.containsKey(key)) {
-                        numbers.add(digitsByWord.get(key).toString())
-                        i += key.length
-                    }
-                    if(key.length == 5) {
-                        i++
-                        reset = true
-                        break
-                    }
+            if (i == line.length - 1 ) {
+                if (line[i].isDigit()) {
+                    numbers.add(line[i].toString())
                 }
-                if(!reset) i++
+                i++
+            } else {
+                var defaultKeyLength = line.substring(i, i + 2)
+                if (digitsByWord.containsKey(defaultKeyLength)) {
+                    numbers.add(digitsByWord.get(defaultKeyLength).toString())
+                    i += defaultKeyLength.length
+                } else {
+                    var reset = false
+                    for (j in i + defaultKeyLength.length..line.length - 1) {
+                        var key = line.substring(line.indexOf(defaultKeyLength), j + 1)
+                        if (digitsByWord.containsKey(key)) {
+                            numbers.add(digitsByWord.get(key).toString())
+                            i += key.length - 1
+                        }
+                        if (key.length == 5) {
+                            i++
+                            reset = true
+                            break
+                        }
+                    }
+                    if (!reset) i++
+                }
             }
         }
     }
-    return numbers[0].toString().plus(numbers[numbers.size-1].toString())
+    return numbers[0].toString().plus(numbers[numbers.size-1].toString()).toLongOrNull()
 }
 
 private fun calculateLineFromLetters(line: String): Long? {
